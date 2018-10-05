@@ -1,0 +1,764 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ImpactHack: Uprooted</title>
+
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+
+    <!-- BOOTSTRAP LINKS BELOW -->
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <!-- Latest compiled JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- END BOOTSTRAP SECTION -->
+
+    <!-- Leaflet CSS & JS-->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.3/dist/leaflet.css"
+    integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
+    crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.3.3/dist/leaflet.js"
+    integrity="sha512-tAGcCfR4Sc5ZP5ZoVz0quoZDYX5aCtEm/eu1KhSLj2c9eFrylXZknQYmxUssFaVJKvvc0dJQixhGjG2yXWiV9Q=="
+    crossorigin=""></script>
+
+    <!-- d3 JavaScript -->
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+
+
+
+    <!-- Mapbox API Key -->
+    <script type="text/javascript" src="static/js/config.js"></script>
+
+    <!-- Leaflet-Choropleth JavaScript -->
+    <script type="text/javascript" src="static/js/choropleth.js"></script>
+
+    <!-- Our CSS -->
+    <link rel="stylesheet" type="text/css" href="static/css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Dosis|Titillium+Web" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+<body>
+
+    <nav class="navbar" id="navbartop">
+        <div class="container-fluid">
+          <div class="navbar-header">
+                <a class="navbar-brand" href="#" data-toggle="modal" data-target="#exampleModal"><img src="static/uprooted logo.png" style="height:120px"/></a>
+            </div>
+          <ul class="nav navbar-nav navbar-right">
+                <li><a style="color:white" href="https://impacthack.devpost.com/"><i class="fa fa-question-circle-o" style="color:white"></i>&nbsp;&nbsp;What is ImpactHack?</a></li>
+                 <li><a style="color:white"href="https://www.wri.org/"><i class="fa fa-globe" style="color:white"></i>&nbsp;&nbsp;World Resources Institute</a></li>
+                 <li><a style="color:white" href="https://www.state.gov/"><i class="fa fa-university" style="color:white"></i>&nbsp;&nbsp;US State Department</a></li>
+          </ul>
+        </div>
+      </nav>
+
+<!-- intro content 1 -->
+
+
+
+    <div class="container">
+
+
+      <div class="row">
+        <div class="col-md-6">
+                <div id="map" style='height:100%; width:100%'></div>
+        </div>
+
+        <div class="col-md-6 infobar">
+            <div class="row">
+                <div id="countryname">COUNTRY NAME</div>
+            </div>
+            <div class="row">
+                <ul class="nav nav-tabs">
+                    <li class="active" id="polittab"><a href="#" onclick="set_active_y(3)" >Political</a></li>
+                    <li id="econtab"><a href="#" onclick="set_active_y(2)"> Economic</a></li>
+                    <li id="envirotab"><a href="#" onclick="set_active_y(1)">Environmental</a></li>
+                </ul>
+            </div>
+            <div class="row">
+                <div id="scatterplot"></div>
+                <div id="graphtitle">POLITICAL FREEDOM INDEX</div>
+                <div id="graphexplanation">The Political Freedom Index demonstrates the freedom of citizens to express themseslves politically.</div>
+                <div id="countryexplanation"></div>
+            </div>
+            <div class="row">
+                <br/>
+                <div id="relatedreading">Related News</div>
+                <ul id="Newsfeed"></ul>
+            </div>
+        </div>
+      </div>
+
+
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade in modalstyling" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+               <div class="modal-content">
+                 <div class="modal-header">
+                   <h5 class="modal-title" id="exampleModalLabel" style="font-family: 'Dosis', Sans-Serif; font-size: 40px; color:rgb(24, 40, 133);">UPROOTED: An ImpactHack Project</h5>
+                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                     <span aria-hidden="true">&times;</span>
+                   </button>
+                 </div>
+                 <div class="modal-body" style="height: 650px">
+                       <h3>By the end of 2017, 68.5 million individuals were forcibly displaced worldwide as a result of persecution, conflict, violence, or human rights violations.
+                         <!-- <hr> -->
+                         <div class="row vcenter">
+                            <div class="col-md-4">
+                              <img src="http://www.clker.com/cliparts/S/o/l/i/H/A/uk-map-hi.png" width="200px">
+                            </div>
+                          <div class="col-md-8">
+                              That's 2.3 million more people than the entire population of the UK.</h3>
+                              <!-- <hr> -->
+                          <div class="row">
+                              <h3>Use the maps to explore which countries refugees are migrating from,
+                                how the conditions in their country of origin compare to the rest of the world,
+                                and which countries they are migrating to.</h3>
+                          </div>
+                        </div>
+
+
+
+
+
+
+                 <div class="modal-footer">
+                   <button type="button" class="btn btn-primary" data-dismiss="modal">Learn More</button>
+                 </div>
+               </div>
+             </div>
+         </div>
+
+
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
+<script type="text/javascript" src="static/js/script.js"></script>
+
+
+<footer class="footer" >
+    UPROOTED: An ImpactHack Project
+</footer>
+
+<script>
+
+var margin = { top: 40, right: 40, bottom: 40, left: 40 };
+var sclfctr = .05
+var scatter_width = 300*(1+sclfctr) - margin.left - margin.right + 1;
+var scatter_height = 300*(1+sclfctr) - margin.top - margin.bottom;
+
+function format_si(x) {
+  var s = d3.format(".2s")(x);
+  switch (s[s.length - 1]) {
+    case "G": return s.slice(0, -1) + "B";
+  }
+  return s;
+}
+
+var metric_info = {
+  "Number of Refugees from each Country": {
+    "name": "Number of Refugees from each Country",
+    "units": "People",
+    "scale": d3.scaleLinear().range([0,scatter_width]).clamp(true),
+    "format": format_si,
+    "extent": [0, 6308619]
+  },
+  "Water Stress, All Sectors": {
+    "name": "Water Stress",
+    "units": "Index Score",
+    "scale": d3.scaleLinear().range([0,scatter_height]).clamp(true),
+    "format": format_si,
+    "extent": [5,0]
+  },
+  "Political Freedoms Index": {
+    "name": "Political Freedoms Index",
+    "units": "Index Score",
+    "scale": d3.scaleLinear().range([0,scatter_height]).clamp(true),
+    "format": format_si,
+    "extent": [100, 0]
+  },
+  "GDP": {
+    "name": "GDP",
+    "units": "USD",
+    "scale": d3.scaleLinear().range([0,scatter_height]).clamp(true),
+    "format": format_si,
+    "extent": [25000000000, 0]
+  }
+}
+
+var gdp = "GDP";
+var water_stress = "Water Stress, All Sectors";
+var political_freedom = "Political Freedoms Index";
+var refugees = "Number of Refugees from each Country";
+
+var active_x_metric = refugees
+var active_y_metric = political_freedom
+
+var selected_country = 'USA'
+
+var countries = ['AFG',
+'SYR',
+'IRQ',
+'SOM',
+'SDN',
+'SSD',
+'COD',
+'MMR',
+'COL',
+'VNM',
+'ERI',
+'CAF',
+'BDI',
+'CHN',
+'RWA',
+'PSE',
+'LKA',
+'TUR',
+'PAK',
+'UKR',
+'RUS',
+'MLI',
+'IRN',
+'NGA',
+'AGO',
+'ETH',
+'HRV',
+'CIV',
+'BTN',
+'BIH',
+'LBR',
+'TCD',
+'MRT',
+'HTI',
+'ZWE',
+'SEN',
+'GHA',
+'IDN',
+'COG',
+'KHM',
+'ARM',
+'IND',
+'TGO',
+'GIN',
+'AZE',
+'ALB',
+'CMR',
+'EGY',
+'SLE',
+'BGD',
+'SLV',
+'LBN',
+'GEO',
+'MEX',
+'KEN',
+'GTM',
+'UGA',
+'LAO',
+'VEN',
+'CUB',
+'NPL',
+'YEM',
+'UZB',
+'DZA',
+'PER',
+'GMB',
+'MKD',
+'BLR',
+'LBY',
+'HND',
+'MDA',
+'KAZ',
+'ROU',
+'KGZ',
+'MAR',
+'BGR',
+'JOR',
+'TUN',
+'MNG',
+'HUN',
+'POL',
+'MNE',
+'NIC',
+'BFA',
+'JAM',
+'FJI',
+'GNB',
+'VCT',
+'NAM',
+'CZE',
+'ISR',
+'BRA',
+'PRK',
+'TZA',
+'KWT',
+'ECU',
+'NER',
+'PHL',
+'DJI',
+'CHL',
+'SAU',
+'TJK',
+'GUY',
+'LCA',
+'THA',
+'TKM',
+'KOR',
+'BOL',
+'MYS',
+'ARG',
+'LVA',
+'COM',
+'ZAF',
+'BEN',
+'SVK',
+'CRI',
+'LTU',
+'DOM',
+'EST',
+'TTO',
+'MDG',
+'GRD',
+'ARE',
+'MWI',
+'BHR',
+'GNQ',
+'ZMB',
+'PNG',
+'JPN',
+'GAB',
+'BHS',
+'DEU',
+'BWA',
+'GBR',
+'URY',
+'CAN',
+'MOZ',
+'SWZ',
+'PRY',
+'FRA',
+'PAN',
+'GRC',
+'BRB',
+'SGP',
+'BEL',
+'MUS',
+'ITA',
+'QAT',
+'NLD',
+'ATG',
+'OMN',
+'DMA',
+'ESP',
+'BLZ',
+'SYC',
+'SVN',
+'AUS',
+'MDV',
+'SUR',
+'PRT',
+'CPV',
+'NZL',
+'KNA',
+'SWE',
+'CHE',
+'TON',
+'LSO',
+'AUT',
+'TCA',
+'DNK',
+'CYP',
+'IRL',
+'NOR',
+'FIN',
+'AND',
+'MLT',
+'CYM',
+'ISL',
+'MCO',
+'MHL',
+'GIB',
+'SMR',
+'BRN',
+'PLW',
+'NRU',
+'NCL'
+]
+
+country_dictionary = {"AFG":"Afghanistan", "ALB":"Albania", "DZA":"Algeria", "ASM":"American Samoa",
+"AND":"Andorra", "AGO":"Angola", "AIA":"Anguilla", "ATG":"Antigua and Barbuda", "ARG":"Argentina",
+"ARM":"Armenia", "ABW":"Aruba", "AUS":"Australia", "AUT":"Austria", "AZE":"Azerbaijan", "BHS":"Bahamas",
+"BHR":"Bahrain", "BGD":"Bangladesh", "BRB":"Barbados", "BLR":"Belarus", "BEL":"Belgium", "BLZ":"Belize",
+"BEN":"Benin", "BMU":"Bermuda", "BTN":"Bhutan", "BOL":"Bolivia", "BIH":"Bosnia and Herzegovina",
+"BWA":"Botswana", "BRA":"Brazil", "VGB":"British Virgin Islands", "BRN":"Brunei Darussalam",
+"BGR":"Bulgaria", "BFA":"Burkina Faso", "BDI":"Burundi", "CPV":"Cabo Verde", "KHM":"Cambodia", "CMR":"Cameroon",
+"CAN":"Canada", "CYM":"Cayman Islands", "CAF":"Central African Republic", "TCD":"Chad", "CHL":"Chile",
+"CHN":"China", "HKG":" Hong Kong", "MAC":" Macao", "COL":"Colombia", "COM":"Comoros", "COG":"Republic of Congo",
+"COK":"Cook Islands", "CRI":"Costa Rica", "HRV":"Croatia", "CUB":"Cuba", "CUW":"Curacao", "CYP":"Cyprus",
+"CZE":"Czech Republic", "CIV":"Cote d'Ivoire", "PRK":"North Korea", "COD":"Democratic Republic of Congo",
+"DNK":"Denmark", "DJI":"Djibouti", "DMA":"Dominica", "DOM":"Dominican Republic", "ECU":"Ecuador", "EGY":"Egypt",
+"SLV":"El Salvador", "GNQ":"Equatorial Guinea", "ERI":"Eritrea", "EST":"Estonia", "ETH":"Ethiopia", "FJI":"Fiji",
+"FIN":"Finland", "FRA":"France", "GUF":"French Guiana", "PYF":"French Polynesia", "GAB":"Gabon", "GMB":"Gambia",
+"GEO":"Georgia", "DEU":"Germany", "GHA":"Ghana", "GIB":"Gibraltar", "GRC":"Greece", "GRD":"Grenada", "GLP":"Guadeloupe",
+"GUM":"Guam", "GTM":"Guatemala", "GIN":"Guinea", "GNB":"Guinea-Bissau", "GUY":"Guyana", "HTI":"Haiti", "VAT":"Vatican",
+"HND":"Honduras", "HUN":"Hungary", "ISL":"Iceland", "IND":"India", "IDN":"Indonesia", "IRN":"Iran", "IRQ":"Iraq",
+"IRL":"Ireland", "ISR":"Israel", "ITA":"Italy", "JAM":"Jamaica", "JPN":"Japan", "JOR":"Jordan", "KAZ":"Kazakhstan",
+"KEN":"Kenya", "KIR":"Kiribati", "KWT":"Kuwait", "KGZ":"Kyrgyzstan", "LAO":"Lao", "LVA":"Latvia", "LBN":"Lebanon",
+"LSO":"Lesotho", "LBR":"Liberia", "LBY":"Libya", "LIE":"Liechtenstein", "LTU":"Lithuania", "LUX":"Luxembourg",
+"MDG":"Madagascar", "MWI":"Malawi", "MYS":"Malaysia", "MDV":"Maldives", "MLI":"Mali", "MLT":"Malta",
+"MHL":"Marshall Islands", "MRT":"Mauritania", "MUS":"Mauritius", "MEX":"Mexico", "FSM":"Micronesia","MCO":"Monaco",
+"MNG":"Mongolia", "MNE":"Montenegro", "MAR":"Morocco", "MOZ":"Mozambique", "MMR":"Myanmar", "NAM":"Namibia",
+"NRU":"Nauru", "NPL":"Nepal", "NLD":"Netherlands", "NZL":"New Zealand", "NIC":"Nicaragua", "NER":"Niger",
+"NGA":"Nigeria", "NIU":"Niue", "NFK":"Norfolk Island", "NOR":"Norway", "OMN":"Oman", "PAK":"Pakistan", "PLW":"Palau",
+"PSE":"Palestinian", "PAN":"Panama", "PNG":"Papua New Guinea", "PRY":"Paraguay", "PER":"Peru", "PHL":"Philippines",
+"POL":"Poland", "PRT":"Portugal", "PRI":"Puerto Rico", "QAT":"Qatar", "KOR":"South Korea", "MDA":"Rep. of Moldova",
+"ROU":"Romania", "RUS":"Russian Federation", "RWA":"Rwanda", "KNA":"Saint Kitts and Nevis", "LCA":"Saint Lucia",
+"VCT":"Saint Vincent and the Grenadines", "SPM" :"Saint-Pierre-et-Miquelon", "WSM":"Samoa", "SMR":"San Marino",
+"STP":"Sao Tome and Principe", "SAU":"Saudi Arabia", "SEN":"Senegal", "SRB":"Serbia", "SYC":"Seychelles",
+"SLE":"Sierra Leone", "SGP":"Singapore", "SVK":"Slovakia", "SVN":"Slovenia", "SLB":"Solomon Islands",
+"SOM":"Somalia", "ZAF":"South Africa", "SSD":"South Sudan", "ESP":"Spain", "LKA":"Sri Lanka", "STL":"Stateless",
+"SDN":"Sudan", "SUR":"Suriname", "SJM":"Svalbard and Jan Mayen", "SWZ":"Swaziland", "SWE":"Sweden",
+"CHE":"Switzerland", "SYR":"Syria", "TJK":"Tajikistan", "THA":"Thailand", "MKD":" Macedonia",
+"TAR":"Tibetan", "TLS":"Timor-Leste", "TGO":"Togo", "TON":"Tonga", "TTO":"Trinidad and Tobago", "TUN":"Tunisia",
+"TUR":"Turkey", "TKM":"Turkmenistan", "TCA":"Turks and Caicos ", "TUV":"Tuvalu", "UGA":"Uganda", "UKR":"Ukraine",
+"ARE":"United Arab Emirates", "GBR":"United Kingdom", "TZA":" Tanzania", "USA":"United States of America",
+"URY":"Uruguay", "UZB":"Uzbekistan", "VUT":"Vanuatu", "UNK":"Refugees","VEN":"Venezuela", "VNM":"Viet Nam",
+"WLF":"Wallis and Futuna Islands ", "ESH":"Western Sahara", "YEM":"Yemen", "ZMB":"Zambia", "ZWE":"Zimbabwe"}
+
+
+var scatter_svg = d3.select("#scatterplot")
+  .append("svg")
+    .attr("width", scatter_width + margin.left + margin.right)
+    .attr("height", scatter_height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+// text label for the x axis
+scatter_svg.append("text")
+      .attr("transform","translate(" + (scatter_width/2) + " ," + (scatter_height + margin.top) + ")")
+      .attr("class","active_x_metric-axis_label")
+      .style("text-anchor", "middle");
+// text label for the y axis
+scatter_svg.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 0 - margin.left)
+    .attr("x",0 - (scatter_height / 2))
+    .attr("dy", "1em")
+    .attr("class","active_y_metric-axis_label")
+    .style("text-anchor", "middle");
+
+  /// LOAD DATA
+  var lookup = {};
+
+  // DRAW SCATTER
+  scatter_svg.append("g")
+    .attr("transform", "translate(0," + scatter_height + ")")
+    .attr("class", "x axis")
+  scatter_svg.selectAll(".x.axis text")
+    .attr("y", 8);
+  scatter_svg.append("g")
+    .attr("transform", "translate(0,0)")
+    .attr("class", "y axis");
+
+  scatter_svg
+    .append("line")
+    .attr("class", "dark-line-1")
+    .style("stroke", "#777")
+    .style("stroke-width", 1)
+    .attr("y1", 0)
+    .attr("y2", scatter_height)
+    .attr("x1", 0)
+    .attr("x2", scatter_width/2)
+
+  scatter_svg
+    .append("line")
+    .attr("class", "dark-line-2")
+    .style("stroke", "#777")
+    .style("stroke-width", 1)
+    .attr("x1", 0)
+    .attr("x2", scatter_width)
+    .attr("y1", 0)
+    .attr("y2", scatter_height/2)
+  // All axes drawing occurs here
+  // Could use a logic check to draw axes if they don't yet exist, this works fine though
+  update_x_axis();
+  update_y_axis();
+
+  var group = scatter_svg.selectAll("g.bubble")
+    .data(countries)
+    .enter().append("g")
+    .attr("class", "bubble")
+  group
+    .append("text")
+    .attr("y", -20)
+    .attr("text-anchor", "middle")
+    .style("font-weight", "bold")
+    .text(function(d) {
+      return d in lookup ? lookup[d].name : "";
+    })
+    .style("display", "none");
+  group
+    .data(countries)
+    .append("circle")
+    .attr("id", (function(d) {
+      var country = d;
+      return(country)
+    }))
+    .on("click", function(d) {
+        update_to_selected_region(d)
+      })
+    .bind
+
+
+
+
+
+
+  function set_active_y(y){
+    if (y == 1){
+      active_y_metric = water_stress
+    } else if (y == 2) {
+      active_y_metric = gdp
+    } else {
+      active_y_metric = political_freedom
+    }
+    refresh_graphic()
+  }
+
+  // Gets country
+  function update_to_selected_region(region_name) {
+    console.log('updating to selected region', region_name)
+      selected_country = region_name
+
+      update_labels()
+
+      d3.selectAll('circle') //<-- or slap a class name on your circles and use that
+          .style('fill', '#191970')
+          .style('opacity', '.1')
+        console.log("click " + region_name)
+        // set selected one to Red
+      d3.selectAll("#" + region_name)
+        .style('fill', 'red')
+        .style('opacity', '1');
+
+      $("#countryexplanation").empty();
+
+      datum = lookup[region_name]
+      country_name = datum.name
+
+      current_metric = metric_info[active_y_metric].name
+
+
+      // $("#countryexplanation").append("How does " + country_name + "'s " + current_metric + " level compare to other countries?")
+
+      console.log(selected_country + "THIS ONE")
+      update_labels();
+      //
+      // return country_name;
+  }
+
+  // var country_name = ''
+  // // Gets country name based on country code of selected country on map
+  // function get_country_name(selected_country){
+  //   console.log('getting country news')
+  //   for (var key in country_dictionary) {
+
+  //     // if (country_dictionary.hasOwnProperty(key)) {
+  //       if (selected_country = key){
+  //         console.log (country_dictionary[key]+"COUNTRY_DICT-SELECTED COUNTRY")
+  //         country_name = country_dictionary[key]
+  //         return country_dictionary[key]
+  //       }
+  //       else {
+  //         return "refugees"
+  //       }
+  //   }
+  // }
+
+
+
+// Uses selected country name to query the Google News API for country related refugee news
+function get_related_news(country_name){
+
+  var url = `https://newsapi.org/v2/everything?q=refugees%20and%20${country_name}&sortBy=relevance&apiKey=${apiKey}`
+
+  d3.json(url, function(data){
+    console.log(data.articles);
+    response = data.articles;
+    console.log(response[0].title);
+
+    var related_news = d3.select('#Newsfeed');
+    related_news.html('');
+
+    for (let i = 0; i < 3; i++) {
+      related_news
+        .append('div')
+        .append('h4')
+        .text(response[i].title)
+          .on("click", function() {
+            window.open(response[i].url);
+          })
+        .append('p')
+        .text(response[i].description)
+    }
+  });
+};
+
+function init() {
+  search_term = 'refugees';
+  get_related_news(search_term);
+};
+
+init()
+
+  // End scatterplot setup
+  function refresh_graphic(){
+    update_x_axis();
+    update_y_axis();
+    update_labels();
+    transition_scatter();
+  }
+
+  function update_x_axis() {
+    xscale = metric_info[active_x_metric].scale;
+    xscale.domain(metric_info[active_x_metric].extent);
+    var xAxis = d3.axisBottom()
+      .tickSize(-scatter_width)
+      .tickFormat(metric_info[active_x_metric].format)
+      .scale(xscale)
+      .ticks(4);
+    scatter_svg.select(".x.axis")
+      .transition()
+      .call(xAxis);
+    d3.selectAll(".dark-line-1")
+      .transition()
+      .attr("x1", xscale(0))
+      .attr("x2", xscale(0))
+    scatter_svg.selectAll(".x.axis text")
+      .transition()
+      .attr("y", 8);
+  };
+
+  function update_y_axis(metric) {
+    yscale = metric_info[active_y_metric].scale;
+    yscale.domain(metric_info[active_y_metric].extent);
+
+    var yAxis = d3.axisLeft()
+      .tickSize(-scatter_height)
+      .tickFormat(metric_info[active_y_metric].format)
+      .scale(yscale);
+    scatter_svg.select(".y.axis")
+      .transition()
+      .call(yAxis);
+    d3.selectAll(".dark-line-2")
+      .transition()
+      .attr("y1", yscale(0))
+      .attr("y2", yscale(0))
+  };
+
+  function transition_scatter() {
+    // Color, size, and position scatter circles
+    scatter_svg.selectAll("g.bubble")
+      .transition()
+      .duration(700)
+      .style("opacity", function(d) {
+        //console.log(d)
+        if (lookup[d]){
+          if (lookup[d][active_x_metric] == ""){return 0;}
+          if (lookup[d][active_y_metric] == ""){return 0;}
+        }
+        // Both metrics exist and are non-null
+        return 1;
+      })
+      .attr("transform", function(d) {
+        if(lookup[d]){
+          return "translate(" + xscale(+lookup[d][active_x_metric]) + "," + yscale(+lookup[d][active_y_metric]) + ")"
+        } else {
+          return "translate(0,0)"
+        }
+      });
+
+
+      scatter_svg.selectAll("g.bubble circle")
+     .transition()
+     .duration(700)
+     .attr("r", 5)
+     .style("fill", function(d) {
+       if (lookup[d]){
+         if (lookup[d][active_x_metric] == ""){return "#eaeaea";}
+         if (lookup[d][active_y_metric] == ""){return "#eaeaea";}
+       }
+       return '#191970' || "#eaeaea";
+     })
+     .style('stroke', 'white')
+     .style('stroke-opacity', .4)
+
+}
+
+function update_labels(){
+  console.log('trying now')
+  console.log(selected_country)
+  //console.log(lookup)
+  //console.log(lookup[selected_country])
+  datum = lookup[selected_country]
+  console.log(datum)
+  country_name = datum.name
+  d3.select("#countryname").text(country_name);
+  d3.select(".active_x_metric-axis_label")
+    .text(metric_info[active_x_metric].name)
+  d3.select(".active_y_metric-axis_label")
+    .text(metric_info[active_y_metric].name)
+
+  if(active_x_metric in datum){
+    xval = +datum[active_x_metric]
+    if(xval == ""){
+      d3.select(".active_x_metric-value")
+        .text("-- " + metric_info[active_x_metric].units);
+    }else{
+      d3.select(".active_x_metric-value")
+        .text(metric_info[active_x_metric].format(xval) + " " + metric_info[active_x_metric].units);
+    }
+  } else {
+    d3.select(".active_x_metric-value")
+      .text("-- " + metric_info[active_x_metric].units);
+  }
+
+  if(active_y_metric in datum){
+    yval = +datum[active_y_metric]
+    if(yval == ""){
+      d3.select(".active_y_metric-value")
+        .text("-- " + metric_info[active_y_metric].units);
+    }else{
+      d3.select(".active_y_metric-value")
+        .text(metric_info[active_y_metric].format(yval) + " " + metric_info[active_y_metric].units);
+    }
+  } else {
+    d3.select(".active_y_metric-value")
+      .text("-- " + metric_info[active_y_metric].units);
+  }
+};
+
+d3.queue()
+  .defer(d3.csv, 'static/scatterplotdata.csv')
+    .await(function(error, all_data) {
+      console.log(all_data)
+      all_data.forEach(function(d) {
+        lookup[d["Country Code"]] = lookup[d["Country Code"]] || {};
+        lookup[d["Country Code"]][d["variable"]] = d['value'];
+        lookup[d["Country Code"]]["name"] = lookup[d["Country Code"]]["name"] || d["Country Name"]
+        lookup[d["Country Code"]]["code"] = lookup[d["Country Code"]]["code"] || d["Country Code"]
+      });
+    console.log(lookup)
+    refresh_graphic()
+    // load_articles()
+    });
+
+
+
+</script>
+</body>
+
+</html>
